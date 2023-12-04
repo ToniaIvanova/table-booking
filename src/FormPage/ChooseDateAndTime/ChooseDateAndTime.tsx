@@ -9,7 +9,7 @@ import {
   useGetAllBookingsQuery,
 } from "../../slices/bookings/api";
 import { getHourDisability } from "./getHourDisability";
-import { useFeedError, useFeedSuccess } from "../../common/feesHook";
+import { useFeedError, useFeedSuccess } from "../../common/feedHook";
 dayjs.extend(utc);
 
 type ChooseDateAndTimeProps = {

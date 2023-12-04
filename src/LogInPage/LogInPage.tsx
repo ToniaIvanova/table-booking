@@ -11,7 +11,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { LogInResponseDto } from "../slices/users/types";
 import { useGetOrAddUserMutation } from "../slices/users/api";
 import { Copyright } from "../common/Copyright";
-import { useFeedError, useFeedSuccess } from "../common/feesHook";
+import { useFeedError, useFeedSuccess } from "../common/feedHook";
 
 const defaultTheme = createTheme();
 
