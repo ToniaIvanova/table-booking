@@ -15,13 +15,12 @@ const changeDate = (date: Date, hour?: number | null, day?: number) => {
   return newDate;
 };
 
-
 // array for 0 to 23 hours: 0 - disabled, 1 - one seat is available, 2 - free table
 export const getHourDisability = (
   date: Date | null,
   now: Date,
   localBookings: Booking[],
-  userId: string,
+  userId: string
 ) => {
   if (!localBookings) {
     return [];
@@ -44,8 +43,8 @@ export const getHourDisability = (
     dh = allHours.map(() => 2);
   }
 
-  const startForFilter = changeDate(today, -3);
-  const endForFilter = changeDate(today, 3, 1);
+  const startForFilter = changeDate(date, -3);
+  const endForFilter = changeDate(date, 3, 1);
 
   const bookingsForDate = localBookings.filter(({ start }) => {
     return start >= startForFilter && start < endForFilter;
@@ -61,7 +60,7 @@ export const getHourDisability = (
         dh[hourForDisable.getHours()] = 0;
       }
     }
-    
+
     if (start >= date && start < nextDay && !userSecond) {
       dh[start.getHours()] = userFirst === userId ? 0 : 1;
     }

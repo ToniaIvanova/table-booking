@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState, useEffect } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { Alert, Box, Button, CircularProgress, Grid } from "@mui/material";
@@ -51,6 +51,14 @@ export const ChooseDateAndTime: React.FC<ChooseDateAndTimeProps> = ({
     );
   }, [date, now, data, userId]);
 
+  // go to first day with free places
+  useEffect(() => {
+    const dayDisability = hourDisability.reduce((prev, curr) => curr + prev, 0);
+    if (dayDisability === 0) {
+      setDate((prevDate) => prevDate?.add(1, "day") ?? null);
+    }
+  }, [hourDisability]);
+
   const onNext = useCallback(() => {
     if (date && choosenHour !== undefined && choosenHour !== null) {
       addBooking({
@@ -58,7 +66,7 @@ export const ChooseDateAndTime: React.FC<ChooseDateAndTimeProps> = ({
         userId,
       })
         .unwrap()
-        .then((res) => {
+        .then(() => {
           feedSuccess("Thanks for reservation");
         })
         .catch((err) => {
@@ -69,7 +77,7 @@ export const ChooseDateAndTime: React.FC<ChooseDateAndTimeProps> = ({
     }
   }, [addBooking, choosenHour, date, feedError, feedSuccess, userId]);
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return <CircularProgress color="success" />;
   }
 
@@ -85,7 +93,12 @@ export const ChooseDateAndTime: React.FC<ChooseDateAndTimeProps> = ({
     <>
       <Grid container spacing={3}>
         <Grid item xs={5}>
-          <Calendar date={date} setDate={onDateChange} />
+          <Calendar
+            date={date}
+            setDate={onDateChange}
+            data={data}
+            userId={userId}
+          />
         </Grid>
 
         {date && hourDisability && (
